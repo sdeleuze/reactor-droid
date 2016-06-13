@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "fr.ekito.reactivedroid"
-        minSdkVersion 'N'
-        targetSdkVersion 'N'
+        minSdkVersion '24'
+        targetSdkVersion '24'
         versionCode 1
         versionName "1.0"
 
@@ -24,6 +24,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
