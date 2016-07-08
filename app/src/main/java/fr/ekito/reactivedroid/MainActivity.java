@@ -10,10 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -29,42 +25,25 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Log.i(TAG, "onCreate");
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG, "onClick");
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Flux<String> from = Flux.from(new Publisher<String>() {
-                    @Override
-                    public void subscribe(Subscriber<? super String> s) {
-                        for (int i = 0; i < 10; i++) {
-                            s.onNext("msg - " + i);
-                        }
-                        s.onComplete();
-                    }
-                }).publishOn(Schedulers.single());
 
-                from.subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-                        s.request(Long.MAX_VALUE);
-                    }
+                Log.i(TAG, "foobar");
+                Flux
+                        .just("Reactor")
+                        .subscribeOn(Schedulers.computation())
+                        .publishOn(AndroidScheduler.mainThread())
+                        .subscribe(foo -> Log.i(TAG, "got " + foo));
+                Flux
+                        .intervalMillis(1000)
+                        .publishOn(AndroidScheduler.mainThread())
+                        .subscribe(foo -> Log.i(TAG, "got " + foo));
 
-                    @Override
-                    public void onNext(String s) {
-                        Log.i(TAG, "got msg " + s);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i(TAG, "completed");
-                    }
-                });
             }
         });
     }
