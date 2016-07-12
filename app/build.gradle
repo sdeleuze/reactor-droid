@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "fr.ekito.reactivedroid"
-        minSdkVersion 24
-        targetSdkVersion 24
+        minSdkVersion 23
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
 
